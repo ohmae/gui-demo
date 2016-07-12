@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -104,7 +103,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                 } else {
                     final ImageView image = new ImageView(getBaseContext());
                     image.setImageResource(R.drawable.ic_adb);
-                    final LayoutParams params = new LayoutParams(size, size);
+                    final GridView.LayoutParams params = new GridView.LayoutParams(size, size);
                     image.setLayoutParams(params);
                     image.setPadding(padding, padding, padding, padding);
                     view = image;
@@ -202,10 +201,12 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
         private Bitmap mBitmap;
         private Paint mPaint;
         private float mOffset;
+        private float mDensity;
 
         public MenuBackground(Activity activity) {
             mView = activity.findViewById(android.R.id.content);
             mPaint = new Paint();
+            mDensity = activity.getResources().getDisplayMetrics().density;
         }
 
         public void capture() {
@@ -215,7 +216,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
             mView.setDrawingCacheEnabled(true);
             Bitmap cache = mView.getDrawingCache();
             if (cache != null) {
-                mBitmap = fastBlur(cache, 40, Color.argb(0x90, 0xe0, 0xf8, 0xff));
+                mBitmap = fastBlur(cache, (int) (20 * mDensity), Color.argb(0x90, 0xe0, 0xf8, 0xff));
             }
             mView.setDrawingCacheEnabled(false);
         }
