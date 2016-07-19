@@ -10,8 +10,10 @@ package net.mm2d.guidemo.theme;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -52,12 +54,53 @@ public class ThemeCheckDelegate {
                 mActivity.setContentView(R.layout.activity_theme_check_legacy);
             } else {
                 mActivity.setContentView(R.layout.activity_theme_check);
+                if (theme >= android.R.style.Theme_Material) {
+                    TypedValue value = new TypedValue();
+                    mActivity.getTheme().resolveAttribute(android.R.attr.colorPrimary, value, true);
+                    setTextBackground(R.id.textColorPrimary, value.data);
+                    mActivity.getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, value, true);
+                    setTextBackground(R.id.textColorPrimaryDark, value.data);
+                    mActivity.getTheme().resolveAttribute(android.R.attr.colorAccent, value, true);
+                    setTextBackground(R.id.textColorAccent, value.data);
+                } else {
+                    findViewById(R.id.textColorPrimary).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.textColorPrimaryDark).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.textColorAccent).setVisibility(View.INVISIBLE);
+                }
             }
         }
         final TextView title = (TextView) findViewById(R.id.title);
         title.setText("Theme: " + name);
         setupNavigation();
         setupParts();
+    }
+
+    private void setTextBackground(int resId, int color) {
+        TextView text = (TextView) mActivity.findViewById(resId);
+        if (text == null) {
+            return;
+        }
+        int textColor = getBrightness(color) < 128 ? Color.WHITE : Color.BLACK;
+        text.setTextColor(textColor);
+        text.setBackgroundColor(color);
+        text.setVisibility(View.VISIBLE);
+    }
+
+    private static int getBrightness(int color) {
+        return getBrightness(Color.red(color), Color.green(color), Color.blue(color));
+    }
+
+    private static int getBrightness(int r, int g, int b) {
+        return clamp((int) (r * 0.299 + g * 0.587 + b * 0.114 + 0.5f), 0, 255);
+    }
+
+    private static int clamp(int value, int min, int max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        }
+        return value;
     }
 
     private void setupNavigation() {

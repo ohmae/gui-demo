@@ -110,7 +110,8 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                 }
                 final GradientDrawable d = new GradientDrawable();
                 d.setShape(GradientDrawable.OVAL);
-                hsv[0] = (position * 73) % 360;
+                // hsv[0] = (position * 73) % 360;
+                hsv[0] = (float) (Math.random() * 360);
                 d.setColor(Color.HSVToColor(hsv));
                 view.setBackground(d);
                 return view;
@@ -253,16 +254,16 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
          * http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
          * Java Author: Mario Klingemann <mario at quasimondo.com>
          * http://incubator.quasimondo.com
-         *
+         * <p/>
          * created Feburary 29, 2004
          * Android port : Yahel Bouaziz <yahel at kayenko.com>
          * http://www.kayenko.com
          * ported april 5th, 2012
-         *
+         * <p/>
          * This is a compromise between Gaussian Blur and Box blur
          * It creates much better looking blurs than Box Blur, but is
          * 7x faster than my Gaussian Blur implementation.
-         *
+         * <p/>
          * I called it Stack Blur because this describes best how this
          * filter works internally: it creates a kind of moving stack
          * of colors whilst scanning through the image. Thereby it
@@ -271,7 +272,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
          * colors on the topmost layer of the stack are either added on
          * or reduced by one, depending on if they are on the right or
          * on the left side of the stack.
-         *
+         * <p/>
          * If you are using this algorithm in your code please add
          * the following line:
          * Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
