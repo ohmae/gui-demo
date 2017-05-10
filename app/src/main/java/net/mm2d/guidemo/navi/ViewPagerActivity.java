@@ -52,7 +52,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
             page.setScaleX(1f);
             page.setScaleY(1f);
-            page.setAlpha(1f);
+            page.setAlpha(1f + position / 4f);
             page.setTranslationX(0f);
         });
     }
