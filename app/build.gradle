@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 def applicationName = "GuiDemo"
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 8
+def versionPatch = 9
 
 android {
     compileSdkVersion 25
@@ -25,7 +25,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
