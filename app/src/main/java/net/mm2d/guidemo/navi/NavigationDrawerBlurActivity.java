@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,7 +103,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                 if (convertView != null) {
                     view = convertView;
                 } else {
-                    final ImageView image = new ImageView(getBaseContext());
+                    final ImageView image = new AppCompatImageView(getBaseContext());
                     image.setImageResource(R.drawable.ic_adb);
                     final GridView.LayoutParams params = new GridView.LayoutParams(size, size);
                     image.setLayoutParams(params);
@@ -241,7 +243,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
 
         @Override
         public int getOpacity() {
-            return 0;
+            return PixelFormat.OPAQUE;
         }
 
         /**

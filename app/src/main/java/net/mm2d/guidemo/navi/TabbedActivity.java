@@ -106,7 +106,7 @@ public class TabbedActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "SECTION " + (position + 1);
+            return "TAB " + (position + 1);
         }
     }
 }
