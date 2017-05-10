@@ -47,19 +47,17 @@ public class ThemeCheckDelegate {
     }
 
     protected void onCreate(int theme, String name) {
-        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+        if (mActivity instanceof AppCompatActivity) {
+            mActivity.setContentView(R.layout.activity_theme_check_app_compat);
+            setMaterialThemeColor(theme);
+            setUpAppCompatParts();
+        } else if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+            mActivity.setContentView(R.layout.activity_theme_check_legacy);
+        } else if (theme < android.R.style.Theme_Holo) {
             mActivity.setContentView(R.layout.activity_theme_check_legacy);
         } else {
-            if (theme < android.R.style.Theme_Holo) {
-                mActivity.setContentView(R.layout.activity_theme_check_legacy);
-            } else if (mActivity instanceof AppCompatActivity){
-                mActivity.setContentView(R.layout.activity_theme_check_app_compat);
-                setMaterialThemeColor(theme);
-                setUpAppCompatParts();
-            } else {
-                mActivity.setContentView(R.layout.activity_theme_check);
-                setMaterialThemeColor(theme);
-            }
+            mActivity.setContentView(R.layout.activity_theme_check);
+            setMaterialThemeColor(theme);
         }
         final TextView title = (TextView) findViewById(R.id.title);
         title.setText("Theme: " + name);
