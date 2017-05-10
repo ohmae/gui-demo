@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -276,7 +277,8 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="Hint text"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -287,7 +289,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:hint="Hint text"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -318,22 +321,29 @@
                 android:id="@+id/dialogButton4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3Button Dialog"/>
+                android:layout_gravity="start"
+                android:text="2Button Dialog(Positive+Neutral)"/>
 
             <Button
                 android:id="@+id/dialogButton5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Dialog"/>
+                android:text="3Button Dialog"/>
 
             <Button
                 android:id="@+id/dialogButton6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Single Select Dialog"/>
+                android:text="Select Dialog"/>
 
             <Button
                 android:id="@+id/dialogButton7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Single Select Dialog"/>
+
+            <Button
+                android:id="@+id/dialogButton8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Multi Select Dialog"/>

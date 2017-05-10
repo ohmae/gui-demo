@@ -117,12 +117,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                 return view;
             }
         });
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mMenuBackground.capture();
-            }
-        }, 200);
+        mHandler.postDelayed(() -> mMenuBackground.capture(), 200);
     }
 
     @Override

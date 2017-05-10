@@ -11,9 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -63,11 +60,6 @@ public class NavigationSelectActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.listView);
         assert listView != null;
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mEntries));
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mEntries.get(position).startActivity(NavigationSelectActivity.this);
-            }
-        });
+        listView.setOnItemClickListener((parent, view, position, id) -> mEntries.get(position).startActivity(NavigationSelectActivity.this));
     }
 }

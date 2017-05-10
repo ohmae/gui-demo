@@ -11,9 +11,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -91,21 +88,18 @@ public class ThemeSelectActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.listView);
         assert listView != null;
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mEntries));
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Entry entry = mEntries.get(position);
-                final int value = entry.getValue();
-                final Intent intent = new Intent();
-                if (value < 0x7f000000) {
-                    intent.setClass(ThemeSelectActivity.this, ThemeCheckBaseActivity.class);
-                } else {
-                    intent.setClass(ThemeSelectActivity.this, ThemeCheckCompatActivity.class);
-                }
-                intent.putExtra(EXTRA_THEME, value);
-                intent.putExtra(EXTRA_NAME, entry.toString());
-                startActivity(intent);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            final Entry entry = mEntries.get(position);
+            final int value = entry.getValue();
+            final Intent intent = new Intent();
+            if (value < 0x7f000000) {
+                intent.setClass(ThemeSelectActivity.this, ThemeCheckBaseActivity.class);
+            } else {
+                intent.setClass(ThemeSelectActivity.this, ThemeCheckCompatActivity.class);
             }
+            intent.putExtra(EXTRA_THEME, value);
+            intent.putExtra(EXTRA_NAME, entry.toString());
+            startActivity(intent);
         });
     }
 }

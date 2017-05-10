@@ -7,12 +7,14 @@
 
 package net.mm2d.guidemo.theme;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,8 +22,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -52,27 +52,36 @@ public class ThemeCheckDelegate {
         } else {
             if (theme < android.R.style.Theme_Holo) {
                 mActivity.setContentView(R.layout.activity_theme_check_legacy);
+            } else if (mActivity instanceof AppCompatActivity){
+                mActivity.setContentView(R.layout.activity_theme_check_app_compat);
+                setMaterialThemeColor(theme);
+                setUpAppCompatParts();
             } else {
                 mActivity.setContentView(R.layout.activity_theme_check);
-                if (theme >= android.R.style.Theme_Material) {
-                    TypedValue value = new TypedValue();
-                    mActivity.getTheme().resolveAttribute(android.R.attr.colorPrimary, value, true);
-                    setTextBackground(R.id.textColorPrimary, value.data);
-                    mActivity.getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, value, true);
-                    setTextBackground(R.id.textColorPrimaryDark, value.data);
-                    mActivity.getTheme().resolveAttribute(android.R.attr.colorAccent, value, true);
-                    setTextBackground(R.id.textColorAccent, value.data);
-                } else {
-                    findViewById(R.id.textColorPrimary).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.textColorPrimaryDark).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.textColorAccent).setVisibility(View.INVISIBLE);
-                }
+                setMaterialThemeColor(theme);
             }
         }
         final TextView title = (TextView) findViewById(R.id.title);
         title.setText("Theme: " + name);
-        setupNavigation();
-        setupParts();
+        setUpNavigation();
+        setUpParts();
+    }
+
+    @TargetApi(VERSION_CODES.LOLLIPOP)
+    private void setMaterialThemeColor(int theme) {
+        if (theme >= android.R.style.Theme_Material) {
+            final TypedValue value = new TypedValue();
+            mActivity.getTheme().resolveAttribute(android.R.attr.colorPrimary, value, true);
+            setTextBackground(R.id.textColorPrimary, value.data);
+            mActivity.getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, value, true);
+            setTextBackground(R.id.textColorPrimaryDark, value.data);
+            mActivity.getTheme().resolveAttribute(android.R.attr.colorAccent, value, true);
+            setTextBackground(R.id.textColorAccent, value.data);
+            return;
+        }
+        findViewById(R.id.textColorPrimary).setVisibility(View.INVISIBLE);
+        findViewById(R.id.textColorPrimaryDark).setVisibility(View.INVISIBLE);
+        findViewById(R.id.textColorAccent).setVisibility(View.INVISIBLE);
     }
 
     private void setTextBackground(int resId, int color) {
@@ -103,7 +112,7 @@ public class ThemeCheckDelegate {
         return value;
     }
 
-    private void setupNavigation() {
+    private void setUpNavigation() {
         final String[] mode = new String[]{"GUI", "ListView", "ListView2"};
         final View parent1 = findViewById(R.id.parent1);
         final View parent2 = findViewById(R.id.parent2);
@@ -139,17 +148,14 @@ public class ThemeCheckDelegate {
         });
         final View group = findViewById(R.id.group);
         final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.enableSwitch);
-        toggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setAllEnabled(group, isChecked);
-                setAllEnabled(parent2, isChecked);
-                setAllEnabled(parent3, isChecked);
-            }
+        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setAllEnabled(group, isChecked);
+            setAllEnabled(parent2, isChecked);
+            setAllEnabled(parent3, isChecked);
         });
     }
 
-    private void setupParts() {
+    private void setUpParts() {
         final NumberPicker numberPicker = (NumberPicker) findViewById(R.id.numberPicker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(100);
@@ -161,12 +167,7 @@ public class ThemeCheckDelegate {
         progressBar2.setMax(100);
         progressBar2.setProgress(50);
         progressBar2.setSecondaryProgress(75);
-        final OnClickListener listener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialog(v.getId());
-            }
-        };
+        final OnClickListener listener = v -> showAlertDialog(v.getId());
         findViewById(R.id.dialogButton1).setOnClickListener(listener);
         findViewById(R.id.dialogButton2).setOnClickListener(listener);
         findViewById(R.id.dialogButton3).setOnClickListener(listener);
@@ -174,6 +175,7 @@ public class ThemeCheckDelegate {
         findViewById(R.id.dialogButton5).setOnClickListener(listener);
         findViewById(R.id.dialogButton6).setOnClickListener(listener);
         findViewById(R.id.dialogButton7).setOnClickListener(listener);
+        findViewById(R.id.dialogButton8).setOnClickListener(listener);
         final List<Map<String, String>> data = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             final Map<String, String> map = new HashMap<>();
@@ -207,6 +209,12 @@ public class ThemeCheckDelegate {
                 new String[]{"title", "summary"}, new int[]{android.R.id.text1, android.R.id.text2}));
     }
 
+    private void setUpAppCompatParts() {
+        final TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.text_input_layout);
+        textInputLayout.setError("Error Message");
+        textInputLayout.setErrorEnabled(true);
+    }
+
     private View findViewById(int id) {
         return mActivity.findViewById(id);
     }
@@ -231,23 +239,23 @@ public class ThemeCheckDelegate {
             case R.id.dialogButton4:
                 builder.setMessage("Message");
                 builder.setPositiveButton("OK", null);
-                builder.setNegativeButton("Cancel", null);
                 builder.setNeutralButton("Later", null);
                 break;
             case R.id.dialogButton5:
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                builder.setMessage("Message");
+                builder.setPositiveButton("OK", null);
+                builder.setNegativeButton("Cancel", null);
+                builder.setNeutralButton("Later", null);
                 break;
             case R.id.dialogButton6:
+                builder.setItems(items, (dialog, which) -> dialog.dismiss());
+                break;
+            case R.id.dialogButton7:
                 builder.setSingleChoiceItems(items, 0, null);
                 builder.setPositiveButton("OK", null);
                 builder.setNegativeButton("Cancel", null);
                 break;
-            case R.id.dialogButton7:
+            case R.id.dialogButton8:
                 builder.setMultiChoiceItems(items, null, null);
                 builder.setPositiveButton("OK", null);
                 builder.setNegativeButton("Cancel", null);
