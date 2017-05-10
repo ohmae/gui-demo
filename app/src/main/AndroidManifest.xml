@@ -67,6 +67,10 @@
             android:name=".navi.NavigationDrawerBlurActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".navi.ViewPagerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

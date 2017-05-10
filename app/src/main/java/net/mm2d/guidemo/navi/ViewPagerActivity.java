@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 大前良介(OHMAE Ryosuke)
+ * Copyright (c) 2017 大前良介(OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
@@ -10,59 +10,51 @@ package net.mm2d.guidemo.navi;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.mm2d.guidemo.R;
 
-public class TabbedActivity extends AppCompatActivity {
-
+public class ViewPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final int param = getIntent().getIntExtra(Const.EXTRA_PARAM, 0);
-        switch (param) {
-            default:
-            case 0:
-                setContentView(R.layout.activity_navigation_tabbed1);
-                break;
-            case 1:
-                setContentView(R.layout.activity_navigation_tabbed2);
-                break;
-        }
+        setContentView(R.layout.activity_view_pager);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         final SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         final float density = getResources().getDisplayMetrics().density;
         final ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         assert viewPager != null;
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setOffscreenPageLimit(0);
         viewPager.setPageMargin((int) (1 * density + 0.5f));
         viewPager.setPageMarginDrawable(new ColorDrawable(Color.BLACK));
-        viewPager.setAdapter(sectionsPagerAdapter);
-
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        viewPager.setPageTransformer(true, (page, position) -> {
+            if (Math.abs(position) > 1.0f) {
+                page.setAlpha(0f);
+                return;
+            }
+            if (position > 0) {
+                final float scale = 1f - position / 4f;
+                page.setScaleX(scale);
+                page.setScaleY(scale);
+                page.setAlpha(1f - position / 2f);
+                page.setTranslationX(-page.getWidth() * position);
+                return;
+            }
+            page.setScaleX(1f);
+            page.setScaleY(1f);
+            page.setAlpha(1f);
+            page.setTranslationX(0f);
+        });
     }
 
     public static class PlaceholderFragment extends Fragment {
@@ -83,6 +75,7 @@ public class TabbedActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final View rootView = inflater.inflate(R.layout.fragment_navigation_tabbed, container, false);
+            rootView.setBackgroundColor(Color.WHITE);
             final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.large_text));
             return rootView;

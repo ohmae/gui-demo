@@ -23,14 +23,22 @@ public class NavigationSelectActivity extends AppCompatActivity {
     private static class Entry {
         private final String mName;
         private final Class<?> mClass;
+        private final int mParam;
 
-        public Entry(String name, Class<?> cls) {
-            mName = name;
-            mClass = cls;
+        Entry(final String name, final Class<?> cls) {
+            this(name, cls, 0);
         }
 
-        public void startActivity(Context context) {
-            context.startActivity(new Intent(context, mClass));
+        Entry(final String name, final Class<?> cls, final int param) {
+            mName = name;
+            mClass = cls;
+            mParam = param;
+        }
+
+        void startActivity(Context context) {
+            final Intent intent = new Intent(context, mClass);
+            intent.putExtra(Const.EXTRA_PARAM, mParam);
+            context.startActivity(intent);
         }
 
         @Override
@@ -48,7 +56,9 @@ public class NavigationSelectActivity extends AppCompatActivity {
         mEntries.add(new Entry("NavigationDrawer Material", NavigationDrawerMaterialActivity.class));
         mEntries.add(new Entry("NavigationDrawer Blur Effect", NavigationDrawerBlurActivity.class));
         mEntries.add(new Entry("Master / Detail Flow", ItemListActivity.class));
-        mEntries.add(new Entry("ViewPager + PagerTab", TabbedActivity.class));
+        mEntries.add(new Entry("ViewPager + PagerTab", TabbedActivity.class, 0));
+        mEntries.add(new Entry("ViewPager + TabLayout", TabbedActivity.class, 1));
+        mEntries.add(new Entry("ViewPager + PageTransformer", ViewPagerActivity.class));
         mEntries.add(new Entry("Scrolling", ScrollingActivity.class));
         mEntries.add(new Entry("Settings", SettingsActivity.class));
     }
