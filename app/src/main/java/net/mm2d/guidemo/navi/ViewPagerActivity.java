@@ -34,7 +34,6 @@ public class ViewPagerActivity extends AppCompatActivity {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         assert viewPager != null;
         viewPager.setAdapter(sectionsPagerAdapter);
-        viewPager.setOffscreenPageLimit(0);
         viewPager.setPageMargin((int) (1 * density + 0.5f));
         viewPager.setPageMarginDrawable(new ColorDrawable(Color.BLACK));
         viewPager.setPageTransformer(true, (page, position) -> {
@@ -42,18 +41,16 @@ public class ViewPagerActivity extends AppCompatActivity {
                 page.setAlpha(0f);
                 return;
             }
+            final float scale = 1f - position / 4f;
+            page.setScaleX(scale);
+            page.setScaleY(scale);
             if (position > 0) {
-                final float scale = 1f - position / 4f;
-                page.setScaleX(scale);
-                page.setScaleY(scale);
                 page.setAlpha(1f - position / 2f);
-                page.setTranslationX(-page.getWidth() * position);
+                page.setTranslationX(-1f * page.getWidth() * position / 2f);
                 return;
             }
-            page.setScaleX(1f);
-            page.setScaleY(1f);
             page.setAlpha(1f + position / 4f);
-            page.setTranslationX(0f);
+            page.setTranslationX(page.getWidth() * position / 8f);
         });
     }
 
@@ -95,11 +92,6 @@ public class ViewPagerActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return 5;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "SECTION " + (position + 1);
         }
     }
 }
