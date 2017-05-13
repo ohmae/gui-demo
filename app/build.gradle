@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 def applicationName = "GuiDemo"
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 9
+def versionPatch = 10
 
 android {
     compileSdkVersion 25
