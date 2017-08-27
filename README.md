@@ -1,4 +1,6 @@
 # Android GUI Demo
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
+
 This is a simple Demo App of Android GUI.
 
 ## Install
