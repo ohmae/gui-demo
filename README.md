@@ -1,5 +1,5 @@
 # Android GUI Demo
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
+[![license](https://img.shields.io/github/license/ohmae/GuiDemo.svg)](./LICENSE)
 
 This is a simple Demo App of Android GUI.
 
