@@ -21,20 +21,19 @@ import net.mm2d.guidemo.R;
 
 public class NavigationDrawerV7Activity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         final String[] items = new String[]{"item1", "item2", "item3", "item4"};
-        final ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = findViewById(R.id.listView);
         assert listView != null;
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
+        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        drawerLayout.setDrawerListener(mDrawerToggle);
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);

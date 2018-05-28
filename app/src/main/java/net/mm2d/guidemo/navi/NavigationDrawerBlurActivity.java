@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.view.GravityCompat;
@@ -43,23 +44,21 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
     private MenuBackground mMenuBackground;
-    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer_blur);
-        mHandler = new Handler();
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(mToggle);
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
         mToggle.syncState();
 
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView = findViewById(R.id.nav_view);
         assert mNavigationView != null;
         mNavigationView.setNavigationItemSelectedListener(this);
         mDrawerLayout.addDrawerListener(this);
@@ -73,14 +72,14 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
         final int activity_margin = getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
         final int width = getResources().getDisplayMetrics().widthPixels - activity_margin * 2;
         final int num = width / (size + margin);
-        final GridView gridView = (GridView) findViewById(R.id.gridView);
+        final GridView gridView = findViewById(R.id.gridView);
         assert gridView != null;
         gridView.setEnabled(false);
         gridView.setNumColumns(num);
         gridView.setVerticalSpacing(margin);
         gridView.setHorizontalSpacing(margin);
         gridView.setAdapter(new BaseAdapter() {
-            private float[] hsv = new float[]{0, 1, 1};
+            private final float[] hsv = new float[]{0, 1, 1};
 
             @Override
             public int getCount() {
@@ -98,7 +97,10 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
             }
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(
+                    int position,
+                    View convertView,
+                    ViewGroup parent) {
                 final View view;
                 if (convertView != null) {
                     view = convertView;
@@ -119,7 +121,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                 return view;
             }
         });
-        mHandler.postDelayed(() -> mMenuBackground.capture(), 200);
+        new Handler().postDelayed(() -> mMenuBackground.capture(), 200);
     }
 
     @Override
@@ -131,7 +133,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -158,34 +160,28 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-        } else if (id == R.id.nav_gallery) {
-        } else if (id == R.id.nav_slideshow) {
-        } else if (id == R.id.nav_manage) {
-        } else if (id == R.id.nav_share) {
-        } else if (id == R.id.nav_send) {
-        }
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
+    public void onDrawerSlide(
+            @NonNull View drawerView,
+            float slideOffset) {
         final int width = mNavigationView.getWidth();
         mMenuBackground.setOffset(width * (1.0f - slideOffset));
     }
 
     @Override
-    public void onDrawerOpened(View drawerView) {
+    public void onDrawerOpened(@NonNull View drawerView) {
 
     }
 
     @Override
-    public void onDrawerClosed(View drawerView) {
+    public void onDrawerClosed(@NonNull View drawerView) {
 
     }
 
@@ -195,37 +191,37 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
     }
 
     private static class MenuBackground extends Drawable {
-        private View mView;
+        private final View mView;
         private Bitmap mBitmap;
-        private Paint mPaint;
+        private final Paint mPaint;
         private float mOffset;
-        private float mDensity;
+        private final float mDensity;
 
-        public MenuBackground(Activity activity) {
+        MenuBackground(Activity activity) {
             mView = activity.findViewById(android.R.id.content);
             mPaint = new Paint();
             mDensity = activity.getResources().getDisplayMetrics().density;
         }
 
-        public void capture() {
+        void capture() {
             if (mBitmap != null) {
                 return;
             }
             mView.setDrawingCacheEnabled(true);
-            Bitmap cache = mView.getDrawingCache();
+            final Bitmap cache = mView.getDrawingCache();
             if (cache != null) {
                 mBitmap = fastBlur(cache, (int) (20 * mDensity), Color.argb(0x90, 0xe0, 0xf8, 0xff));
             }
             mView.setDrawingCacheEnabled(false);
         }
 
-        public void setOffset(float offset) {
+        void setOffset(float offset) {
             mOffset = offset;
             invalidateSelf();
         }
 
         @Override
-        public void draw(Canvas canvas) {
+        public void draw(@NonNull Canvas canvas) {
             if (mBitmap != null) {
                 canvas.drawBitmap(mBitmap, mOffset, 0, mPaint);
             }
@@ -274,44 +270,47 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
          * the following line:
          * Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
          */
-        public Bitmap fastBlur(Bitmap sentBitmap, int radius, int color) {
-            Bitmap bitmap = Bitmap.createBitmap(sentBitmap);
+        Bitmap fastBlur(
+                Bitmap sentBitmap,
+                int radius,
+                int color) {
+            final Bitmap bitmap = Bitmap.createBitmap(sentBitmap);
             if (radius < 1) {
                 return (null);
             }
-            int w = bitmap.getWidth();
-            int h = bitmap.getHeight();
-            int[] pix = new int[w * h];
+            final int w = bitmap.getWidth();
+            final int h = bitmap.getHeight();
+            final int[] pix = new int[w * h];
             bitmap.getPixels(pix, 0, w, 0, 0, w, h);
-            int wm = w - 1;
-            int hm = h - 1;
-            int wh = w * h;
-            int div = radius + radius + 1;
-            int r[] = new int[wh];
-            int g[] = new int[wh];
-            int b[] = new int[wh];
-            int vmin[] = new int[Math.max(w, h)];
+            final int wm = w - 1;
+            final int hm = h - 1;
+            final int wh = w * h;
+            final int div = radius + radius + 1;
+            final int[] r = new int[wh];
+            final int[] g = new int[wh];
+            final int[] b = new int[wh];
+            final int[] vmin = new int[Math.max(w, h)];
             int divsum = (div + 1) >> 1;
             divsum *= divsum;
-            int dv[] = new int[256 * divsum];
+            final int[] dv = new int[256 * divsum];
             for (int i = 0; i < 256 * divsum; i++) {
                 dv[i] = (i / divsum);
             }
             int yw = 0;
             int yi = 0;
-            int[][] stack = new int[div][3];
+            final int[][] stack = new int[div][3];
             int stackpointer;
             int stackstart;
             int[] sir;
             int rbs;
-            int r1 = radius + 1;
+            final int r1 = radius + 1;
             int routsum, goutsum, boutsum;
             int rinsum, ginsum, binsum;
             int rsum, gsum, bsum;
             for (int y = 0; y < h; y++) {
                 rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
                 for (int i = -radius; i <= radius; i++) {
-                    int p = pix[yi + Math.min(wm, Math.max(i, 0))];
+                    final int p = pix[yi + Math.min(wm, Math.max(i, 0))];
                     sir = stack[i + radius];
                     sir[0] = (p & 0xff0000) >> 16;
                     sir[1] = (p & 0x00ff00) >> 8;
@@ -346,7 +345,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                     if (y == 0) {
                         vmin[x] = Math.min(x + radius + 1, wm);
                     }
-                    int p = pix[yw + vmin[x]];
+                    final int p = pix[yw + vmin[x]];
                     sir[0] = (p & 0xff0000) >> 16;
                     sir[1] = (p & 0x00ff00) >> 8;
                     sir[2] = (p & 0x0000ff);
@@ -409,7 +408,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
                     if (x == 0) {
                         vmin[y] = Math.min(y + r1, hm) * w;
                     }
-                    int p = x + vmin[y];
+                    final int p = x + vmin[y];
                     sir[0] = r[p];
                     sir[1] = g[p];
                     sir[2] = b[p];

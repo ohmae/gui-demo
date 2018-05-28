@@ -10,6 +10,7 @@ package net.mm2d.guidemo.navi;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -31,7 +32,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         final SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         final float density = getResources().getDisplayMetrics().density;
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        final ViewPager viewPager = findViewById(R.id.container);
         assert viewPager != null;
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.setPageMargin((int) (1 * density + 0.5f));
@@ -60,7 +61,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         public PlaceholderFragment() {
         }
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        static PlaceholderFragment newInstance(int sectionNumber) {
             final PlaceholderFragment fragment = new PlaceholderFragment();
             final Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -69,11 +70,13 @@ public class ViewPagerActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(
+                @NonNull LayoutInflater inflater,
+                ViewGroup container,
+                Bundle savedInstanceState) {
             final View rootView = inflater.inflate(R.layout.fragment_navigation_tabbed, container, false);
             rootView.setBackgroundColor(Color.WHITE);
-            final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            final TextView textView = rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.large_text));
             return rootView;
         }

@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import net.mm2d.guidemo.R;
 
 public class ThemeCheckBaseActivity extends Activity {
-    private ThemeCheckDelegate mDelegate = new ThemeCheckDelegate(this);
+    private final ThemeCheckDelegate mDelegate = new ThemeCheckDelegate(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class ThemeCheckBaseActivity extends Activity {
         final int theme = intent.getIntExtra(ThemeSelectActivity.EXTRA_THEME, 0);
         setTheme(theme);
         mDelegate.onCreate(theme, name);
-        ActionBar actionBar = getActionBar();
+        final ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }

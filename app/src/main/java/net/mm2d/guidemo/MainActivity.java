@@ -11,9 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -28,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
         private final String mName;
         private final Class<?> mClass;
 
-        public Entry(String name, Class<?> cls) {
+        Entry(
+                String name,
+                Class<?> cls) {
             mName = name;
             mClass = cls;
         }
 
-        public void startActivity(Context context) {
+        void startActivity(Context context) {
             context.startActivity(new Intent(context, mClass));
         }
 
@@ -55,9 +54,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = findViewById(R.id.listView);
         assert listView != null;
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mEntries));
         listView.setOnItemClickListener((parent, view, position, id) -> mEntries.get(position).startActivity(MainActivity.this));

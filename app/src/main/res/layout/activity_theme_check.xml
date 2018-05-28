@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,18 +21,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Theme:"/>
+
         <TextView
             android:id="@+id/textColorPrimary"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:gravity="center"
             android:text="P"/>
+
         <TextView
             android:id="@+id/textColorPrimaryDark"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:gravity="center"
             android:text="D"/>
+
         <TextView
             android:id="@+id/textColorAccent"
             android:layout_width="30dp"

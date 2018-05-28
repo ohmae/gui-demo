@@ -24,15 +24,17 @@ public class ThemeSelectActivity extends AppCompatActivity {
     public static final String EXTRA_NAME = "EXTRA_NAME";
 
     private static class Entry {
-        private String mName;
-        private int mValue;
+        private final String mName;
+        private final int mValue;
 
-        public Entry(String name, int value) {
+        Entry(
+                String name,
+                int value) {
             mName = name;
             mValue = value;
         }
 
-        public int getValue() {
+        int getValue() {
             return mValue;
         }
 
@@ -41,7 +43,7 @@ public class ThemeSelectActivity extends AppCompatActivity {
         }
     }
 
-    private List<Entry> mEntries;
+    private final List<Entry> mEntries;
 
     public ThemeSelectActivity() {
         mEntries = new ArrayList<>();
@@ -85,7 +87,7 @@ public class ThemeSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme_select);
-        final ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = findViewById(R.id.listView);
         assert listView != null;
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mEntries));
         listView.setOnItemClickListener((parent, view, position, id) -> {

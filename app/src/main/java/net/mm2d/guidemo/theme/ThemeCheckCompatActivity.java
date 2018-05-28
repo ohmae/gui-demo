@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import net.mm2d.guidemo.R;
 
 public class ThemeCheckCompatActivity extends AppCompatActivity {
-    private ThemeCheckDelegate mDelegate = new ThemeCheckDelegate(this);
+    private final ThemeCheckDelegate mDelegate = new ThemeCheckDelegate(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class ThemeCheckCompatActivity extends AppCompatActivity {
         final int theme = intent.getIntExtra(ThemeSelectActivity.EXTRA_THEME, 0);
         setTheme(theme);
         mDelegate.onCreate(theme, name);
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }

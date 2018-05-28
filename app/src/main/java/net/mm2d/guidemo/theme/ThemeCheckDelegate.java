@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.math.MathUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
@@ -39,14 +40,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ThemeCheckDelegate {
-    private Activity mActivity;
+class ThemeCheckDelegate {
+    private final Activity mActivity;
 
     public ThemeCheckDelegate(Activity activity) {
         mActivity = activity;
     }
 
-    protected void onCreate(int theme, String name) {
+    void onCreate(
+            int theme,
+            String name) {
         if (mActivity instanceof AppCompatActivity) {
             mActivity.setContentView(R.layout.activity_theme_check_app_compat);
             setMaterialThemeColor(theme);
@@ -82,12 +85,14 @@ public class ThemeCheckDelegate {
         findViewById(R.id.textColorAccent).setVisibility(View.INVISIBLE);
     }
 
-    private void setTextBackground(int resId, int color) {
-        TextView text = (TextView) mActivity.findViewById(resId);
+    private void setTextBackground(
+            int resId,
+            int color) {
+        final TextView text = mActivity.findViewById(resId);
         if (text == null) {
             return;
         }
-        int textColor = getBrightness(color) < 128 ? Color.WHITE : Color.BLACK;
+        final int textColor = getBrightness(color) < 128 ? Color.WHITE : Color.BLACK;
         text.setTextColor(textColor);
         text.setBackgroundColor(color);
         text.setVisibility(View.VISIBLE);
@@ -97,17 +102,11 @@ public class ThemeCheckDelegate {
         return getBrightness(Color.red(color), Color.green(color), Color.blue(color));
     }
 
-    private static int getBrightness(int r, int g, int b) {
-        return clamp((int) (r * 0.299 + g * 0.587 + b * 0.114 + 0.5f), 0, 255);
-    }
-
-    private static int clamp(int value, int min, int max) {
-        if (value < min) {
-            return min;
-        } else if (value > max) {
-            return max;
-        }
-        return value;
+    private static int getBrightness(
+            int r,
+            int g,
+            int b) {
+        return MathUtils.clamp((int) (r * 0.299 + g * 0.587 + b * 0.114 + 0.5f), 0, 255);
     }
 
     private void setUpNavigation() {
@@ -119,7 +118,11 @@ public class ThemeCheckDelegate {
         modeSelect.setAdapter(new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, mode));
         modeSelect.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(
+                    AdapterView<?> parent,
+                    View view,
+                    int position,
+                    long id) {
                 switch (position) {
                     default:
                     case 0:
@@ -262,7 +265,9 @@ public class ThemeCheckDelegate {
         builder.show();
     }
 
-    private void setAllEnabled(View view, boolean enabled) {
+    private void setAllEnabled(
+            View view,
+            boolean enabled) {
         if (view instanceof ViewGroup) {
             final ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) {

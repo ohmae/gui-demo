@@ -36,7 +36,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().onPostCreate(savedInstanceState);
     }
 
-    public ActionBar getSupportActionBar() {
+    ActionBar getSupportActionBar() {
         return getDelegate().getSupportActionBar();
     }
 
@@ -61,12 +61,16 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     }
 
     @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
+    public void setContentView(
+            View view,
+            ViewGroup.LayoutParams params) {
         getDelegate().setContentView(view, params);
     }
 
     @Override
-    public void addContentView(View view, ViewGroup.LayoutParams params) {
+    public void addContentView(
+            View view,
+            ViewGroup.LayoutParams params) {
         getDelegate().addContentView(view, params);
     }
 
@@ -77,7 +81,9 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     }
 
     @Override
-    protected void onTitleChanged(CharSequence title, int color) {
+    protected void onTitleChanged(
+            CharSequence title,
+            int color) {
         super.onTitleChanged(title, color);
         getDelegate().setTitle(title);
     }

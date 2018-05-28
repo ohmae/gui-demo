@@ -46,7 +46,10 @@ public class DummyContent {
         public final String content;
         public final String details;
 
-        public DummyItem(String id, String content, String details) {
+        DummyItem(
+                String id,
+                String content,
+                String details) {
             this.id = id;
             this.content = content;
             this.details = details;

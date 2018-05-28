@@ -25,11 +25,16 @@ public class NavigationSelectActivity extends AppCompatActivity {
         private final Class<?> mClass;
         private final int mParam;
 
-        Entry(final String name, final Class<?> cls) {
+        Entry(
+                final String name,
+                final Class<?> cls) {
             this(name, cls, 0);
         }
 
-        Entry(final String name, final Class<?> cls, final int param) {
+        Entry(
+                final String name,
+                final Class<?> cls,
+                final int param) {
             mName = name;
             mClass = cls;
             mParam = param;
@@ -67,7 +72,7 @@ public class NavigationSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_select);
-        final ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = findViewById(R.id.listView);
         assert listView != null;
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mEntries));
         listView.setOnItemClickListener((parent, view, position, id) -> mEntries.get(position).startActivity(NavigationSelectActivity.this));

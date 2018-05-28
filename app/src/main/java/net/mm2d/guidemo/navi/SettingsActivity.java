@@ -31,7 +31,7 @@ import net.mm2d.guidemo.R;
 import java.util.List;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
-    private static OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
+    private static final OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
         String stringValue = value.toString();
 
         if (preference instanceof ListPreference) {
@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        final int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
@@ -126,7 +126,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
+            final int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
                 return true;
@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
+            final int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
                 return true;
@@ -168,7 +168,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
+            final int id = item.getItemId();
             if (id == android.R.id.home) {
                 getActivity().onBackPressed();
                 return true;
