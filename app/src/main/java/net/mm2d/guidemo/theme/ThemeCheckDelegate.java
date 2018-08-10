@@ -224,26 +224,27 @@ class ThemeCheckDelegate {
         final String[] items = {"item_0", "item_1", "item_2"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Title");
+        final String message = "Message Message Message Message Message Message Message Message Message Message Message Message";
         switch (v) {
             case R.id.dialogButton1:
-                builder.setMessage("Message");
+                builder.setMessage(message);
                 break;
             case R.id.dialogButton2:
-                builder.setMessage("Message");
+                builder.setMessage(message);
                 builder.setPositiveButton("OK", null);
                 break;
             case R.id.dialogButton3:
-                builder.setMessage("Message");
+                builder.setMessage(message);
                 builder.setPositiveButton("OK", null);
                 builder.setNegativeButton("Cancel", null);
                 break;
             case R.id.dialogButton4:
-                builder.setMessage("Message");
+                builder.setMessage(message);
                 builder.setPositiveButton("OK", null);
                 builder.setNeutralButton("Later", null);
                 break;
             case R.id.dialogButton5:
-                builder.setMessage("Message");
+                builder.setMessage(message);
                 builder.setPositiveButton("OK", null);
                 builder.setNegativeButton("Cancel", null);
                 builder.setNeutralButton("Later", null);
