@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 def applicationName = "GuiDemo"
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 10
+def versionPatch = 11
 
 android {
     compileSdkVersion 27
