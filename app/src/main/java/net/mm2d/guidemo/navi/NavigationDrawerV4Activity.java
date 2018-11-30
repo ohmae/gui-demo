@@ -11,14 +11,15 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import net.mm2d.guidemo.R;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class NavigationDrawerV4Activity extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
@@ -35,7 +36,6 @@ public class NavigationDrawerV4Activity extends Activity {
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
-                R.drawable.ic_drawer,
                 0, 0);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         drawerLayout.setDrawerListener(mDrawerToggle);

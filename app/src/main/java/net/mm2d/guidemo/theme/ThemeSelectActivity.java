@@ -10,7 +10,7 @@ package net.mm2d.guidemo.theme;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -72,15 +72,15 @@ public class ThemeSelectActivity extends AppCompatActivity {
         mEntries.add(new Entry("AppTheme(Custom)",
                 R.style.AppTheme));
         mEntries.add(new Entry("Theme.AppCompat",
-                android.support.v7.appcompat.R.style.Theme_AppCompat));
+                androidx.appcompat.R.style.Theme_AppCompat));
         mEntries.add(new Entry("Theme.AppCompat.DayNight",
-                android.support.v7.appcompat.R.style.Theme_AppCompat_DayNight));
+                androidx.appcompat.R.style.Theme_AppCompat_DayNight));
         mEntries.add(new Entry("Theme.AppCompat.DayNight.DarkActionBar",
-                android.support.v7.appcompat.R.style.Theme_AppCompat_DayNight_DarkActionBar));
+                androidx.appcompat.R.style.Theme_AppCompat_DayNight_DarkActionBar));
         mEntries.add(new Entry("Theme.AppCompat.Light",
-                android.support.v7.appcompat.R.style.Theme_AppCompat_Light));
+                androidx.appcompat.R.style.Theme_AppCompat_Light));
         mEntries.add(new Entry("Theme.AppCompat.Light.DarkActionBar",
-                android.support.v7.appcompat.R.style.Theme_AppCompat_Light_DarkActionBar));
+                androidx.appcompat.R.style.Theme_AppCompat_Light_DarkActionBar));
     }
 
     @Override

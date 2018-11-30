@@ -13,9 +13,6 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.math.MathUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,12 +30,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import net.mm2d.guidemo.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.math.MathUtils;
 
 class ThemeCheckDelegate {
     private final Activity mActivity;

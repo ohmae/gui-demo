@@ -9,16 +9,18 @@ package net.mm2d.guidemo.navi;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import net.mm2d.guidemo.R;
 import net.mm2d.guidemo.dummy.DummyContent;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class ItemDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
