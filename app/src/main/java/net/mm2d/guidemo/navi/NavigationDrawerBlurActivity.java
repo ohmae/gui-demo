@@ -16,8 +16,14 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +38,7 @@ import com.google.android.material.navigation.NavigationView.OnNavigationItemSel
 import net.mm2d.guidemo.R;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -41,7 +48,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener;
 
 public class NavigationDrawerBlurActivity extends AppCompatActivity
-        implements OnNavigationItemSelectedListener, DrawerListener {
+    implements OnNavigationItemSelectedListener, DrawerListener {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
@@ -55,7 +62,7 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(mToggle);
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
         mToggle.syncState();
@@ -100,15 +107,15 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
 
             @Override
             public View getView(
-                    int position,
-                    View convertView,
-                    ViewGroup parent) {
+                int position,
+                View convertView,
+                ViewGroup parent) {
                 final View view;
                 if (convertView != null) {
                     view = convertView;
                 } else {
                     final ImageView image = new AppCompatImageView(getBaseContext());
-                    image.setImageResource(R.drawable.ic_adb);
+                    image.setImageResource(R.drawable.ic_account);
                     final GridView.LayoutParams params = new GridView.LayoutParams(size, size);
                     image.setLayoutParams(params);
                     image.setPadding(padding, padding, padding, padding);
@@ -171,8 +178,8 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
 
     @Override
     public void onDrawerSlide(
-            @NonNull View drawerView,
-            float slideOffset) {
+        @NonNull View drawerView,
+        float slideOffset) {
         final int width = mNavigationView.getWidth();
         mMenuBackground.setOffset(width * (1.0f - slideOffset));
     }
@@ -212,7 +219,11 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
             mView.setDrawingCacheEnabled(true);
             final Bitmap cache = mView.getDrawingCache();
             if (cache != null) {
-                mBitmap = fastBlur(cache, (int) (20 * mDensity), Color.argb(0x90, 0xe0, 0xf8, 0xff));
+                if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+                    mBitmap = blur(cache, 25, Color.argb(0x90, 0xe0, 0xf8, 0xff));
+                } else {
+                    mBitmap = fastBlur(cache, 25, Color.argb(0x90, 0xe0, 0xf8, 0xff));
+                }
             }
             mView.setDrawingCacheEnabled(false);
         }
@@ -244,6 +255,26 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
             return PixelFormat.OPAQUE;
         }
 
+        @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR1)
+        private Bitmap blur(
+            final @NonNull Bitmap sentBitmap,
+            final int radius,
+            final int color) {
+            final Bitmap bitmap = Bitmap.createBitmap(sentBitmap.getWidth(), sentBitmap.getHeight(), sentBitmap.getConfig());
+            final RenderScript rs = RenderScript.create(mView.getContext());
+            final ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap);
+            final Allocation output = Allocation.createFromBitmap(rs, bitmap);
+            blur.setRadius(radius);
+            blur.setInput(input);
+            blur.forEach(output);
+            output.copyTo(bitmap);
+            rs.destroy();
+            final Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(color);
+            return bitmap;
+        }
+
         /**
          * Stack Blur v1.0 from
          * http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
@@ -273,9 +304,9 @@ public class NavigationDrawerBlurActivity extends AppCompatActivity
          * Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
          */
         Bitmap fastBlur(
-                Bitmap sentBitmap,
-                int radius,
-                int color) {
+            Bitmap sentBitmap,
+            int radius,
+            int color) {
             final Bitmap bitmap = Bitmap.createBitmap(sentBitmap);
             if (radius < 1) {
                 return (null);
