@@ -4,7 +4,7 @@ apply plugin: 'com.github.ben-manes.versions'
 def applicationName = "GuiDemo"
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 11
+def versionPatch = 12
 
 android {
     compileSdkVersion 29
